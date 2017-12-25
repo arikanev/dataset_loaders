@@ -39,7 +39,7 @@ class MnistMDataset(ThreadedDataset):
     non_void_nclasses = 2
     _void_labels = []
     GTclasses = range(2)
-    #GTclasses = GTclasses + [-1]
+    # GTclasses = GTclasses + [-1]
 
     _mask_labels = {
         0: 'background',
@@ -52,7 +52,7 @@ class MnistMDataset(ThreadedDataset):
         }
 
     _filenames = None
-    
+
     def __init__(self, which_set='train', *args, **kwargs):
         """Construct the ThreadedDataset.
 
@@ -86,9 +86,10 @@ class MnistMDataset(ThreadedDataset):
             filenames = []
 
             for i in range(len(os.listdir(self.im_path))):
-                filenames.append(str(i).zfill(5)+'.png')
+                filenames.append(str(i).zfill(5) + '.png')
 
-            print('MnistMDataset: ' + self.which_set + ' ' + str(len(filenames)) + ' files')
+            print('MnistMDataset: ' + self.which_set +
+                  ' ' + str(len(filenames)) + ' files')
 
         return filenames
 
@@ -111,7 +112,8 @@ class MnistMDataset(ThreadedDataset):
         for prefix, image in sequence:
 
             # open mnist image, convert to numpy array
-            curr_mnistm_im = np.array(Image.open(os.path.join(self.im_path, image))).astype('float32')
+            curr_mnistm_im = Image.open(os.path.join(self.im_path, image))
+            curr_mnistm_im = np.array(curr_mnistm_im).astype('float32')
 
             # append image to X
             X.append(curr_mnistm_im)
@@ -120,8 +122,10 @@ class MnistMDataset(ThreadedDataset):
             F.append(image)
 
             # open mnist mask, convert to numpy array
-            curr_mnistm_mask = np.array(Image.open(os.path.join(self.mask_path, image))).astype('int32')
+            curr_mnistm_mask = Image.open(os.path.join(self.mask_path, image))
+            curr_mnistm_mask = np.array(curr_mnistm_mask).astype('int32')
             curr_mnistm_mask = curr_mnistm_mask / 255
+
             # append mask to Y
             Y.append(curr_mnistm_mask)
 

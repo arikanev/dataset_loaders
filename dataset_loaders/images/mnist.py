@@ -43,7 +43,7 @@ class MnistDataset(ThreadedDataset):
     non_void_nclasses = 2
     _void_labels = []
     GTclasses = range(2)
-    #GTclasses = GTclasses + [-1]
+    # GTclasses = GTclasses + [-1]
 
     _mask_labels = {
         0: 'background',
@@ -61,9 +61,7 @@ class MnistDataset(ThreadedDataset):
         """Construct the ThreadedDataset.
 
         it also creates/copies the dataset in self.path if not already there
-     
           mnist data is in 3 directories train, test, valid)
-        
         """
 
         self.which_set = 'val' if which_set == 'valid' else which_set
@@ -82,8 +80,6 @@ class MnistDataset(ThreadedDataset):
             self.mask_path = os.path.join(self.path, 'val_masks')
 
         super(MnistDataset, self).__init__(*args, **kwargs)
-    
-
 
     @property
     def filenames(self):
@@ -96,7 +92,8 @@ class MnistDataset(ThreadedDataset):
 
             self._filenames = filenames
 
-            print('MnistDataset: ' + self.which_set + ' ' + str(len(filenames)) + ' files')
+            print('MnistDataset: ' + self.which_set +
+                  ' ' + str(len(filenames)) + ' files')
 
         return self._filenames
 
@@ -119,7 +116,9 @@ class MnistDataset(ThreadedDataset):
         for prefix, image in sequence:
 
             # open mnist image, convert to numpy array
-            curr_mnist_im = np.array(Image.open(os.path.join(self.image_path, image))).astype('float32')
+            curr_mnist_im = Image.open(os.path.join(self.image_path, image))
+            curr_mnist_im = np.array(curr_mnist_im).astype('float32')
+
             # append image to X
             X.append(curr_mnist_im)
 
@@ -127,8 +126,10 @@ class MnistDataset(ThreadedDataset):
             F.append(image)
 
             # open mnist mask, convert to numpy array
-            curr_mnist_mask = np.array(Image.open(os.path.join(self.mask_path, image))).astype('int32')
+            curr_mnist_mask = Image.open(os.path.join(self.mask_path, image))
+            curr_mnist_mask = np.array(curr_mnist_mask).astype('int32')
             curr_mnist_mask = curr_mnist_mask / 255
+
             # append mask to Y
             Y.append(curr_mnist_mask)
 
@@ -147,8 +148,7 @@ def test():
         batch_size=10,
         seq_per_subset=0,
         seq_length=0,
-        data_augm_kwargs={
-             'crop_size': (28, 28)},
+        data_augm_kwargs={'crop_size': (28, 28)},
         return_one_hot=True,
         return_01c=True,
         return_list=True,
@@ -159,8 +159,7 @@ def test():
         batch_size=5,
         seq_per_subset=0,
         seq_length=0,
-        data_augm_kwargs={
-             'crop_size': (28, 28)},
+        data_augm_kwargs={'crop_size': (28, 28)},
         return_one_hot=True,
         return_01c=True,
         return_list=True,
