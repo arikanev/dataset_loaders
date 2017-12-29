@@ -1,18 +1,17 @@
 """Mnist dataset."""
-import numpy as np
 import os
 import time
-import pickle as pkl
-import errno
+
+import numpy as np
 from PIL import Image
+
 from dataset_loaders.parallel_loader import ThreadedDataset
-from timeit import default_timer as timer
 
 
 class MnistDataset(ThreadedDataset):
-    """The mnist handwritten digit dataset
+    """The mnist handwritten digit dataset.
 
-    The dataset should be downloaded from [1] into the `shared_path`
+    The dataset should be downloaded from [MNIST] into the `shared_path`
     (that should be specified in the config.ini according to the
     instructions in ../README.md).
 
@@ -24,26 +23,19 @@ class MnistDataset(ThreadedDataset):
 
      References
     ----------
-    [1] Mnist dataset pickle file:
-        your_username_here@elisa1.iro.umontreal.ca:/data/lisa/data/mnist/mnist_seg/
-
+    [MNIST] Mnist dataset:
+        http://yann.lecun.com/exdb/mnist/
     """
 
     name = 'mnist'
 
     # optional arguments
     data_shape = (28, 28, 3)
-    mean = [0, 0, 0]
-    std = [1, 1, 1]
-    max_files = 50000
 
     GTclasses = range(2)
-    mapping_type = 'mnist'
 
     non_void_nclasses = 2
     _void_labels = []
-    GTclasses = range(2)
-    # GTclasses = GTclasses + [-1]
 
     _mask_labels = {
         0: 'background',
@@ -63,7 +55,6 @@ class MnistDataset(ThreadedDataset):
         it also creates/copies the dataset in self.path if not already there
           mnist data is in 3 directories train, test, valid)
         """
-
         self.which_set = 'val' if which_set == 'valid' else which_set
 
         # set file paths

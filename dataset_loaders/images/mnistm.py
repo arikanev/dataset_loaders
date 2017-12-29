@@ -3,11 +3,11 @@ import numpy as np
 import os
 import time
 from PIL import Image
-from dataset_loaders.parallel_loader import ThreadedDataset
+from images.mnist import MnistDataset
 
 
-class MnistMDataset(ThreadedDataset):
-    """The mnist-m handwritten digit dataset
+class MnistMDataset(MnistDataset):
+    """The mnist-m handwritten digit dataset.
 
     The dataset should be downloaded from [1]
 
@@ -19,27 +19,19 @@ class MnistMDataset(ThreadedDataset):
 
      References
     ----------
-    [1] Mnist-m dataset file:
-        your_username_here@elisa1.iro.umontreal.ca:/data/lisa/data/mnistm/images/
-
+    [1] Mnist-m dataset:
+    https://drive.google.com/file/d/0B9Z4d7lAwbnTNDdNeFlERWRGNVk/view
     """
 
     name = 'mnistm'
 
     # optional arguments
     data_shape = (28, 28, 3)
-    mean = [0, 0, 0]
-    std = [1, 1, 1]
-    max_files = 50000
 
-    mapping_type = 'mnist'
-
-    n_classes = 2
+    GTclasses = range(2)
 
     non_void_nclasses = 2
     _void_labels = []
-    GTclasses = range(2)
-    # GTclasses = GTclasses + [-1]
 
     _mask_labels = {
         0: 'background',
@@ -62,7 +54,6 @@ class MnistMDataset(ThreadedDataset):
           train contains 50000 images
           test contains 9000 images
           val contains 9000 images
-
         """
         self.which_set = 'val' if which_set == 'valid' else which_set
 
@@ -95,7 +86,6 @@ class MnistMDataset(ThreadedDataset):
 
     def get_names(self):
         """Return a dict of mnist filenames."""
-
         return {'default': self.filenames}
 
     def load_sequence(self, sequence):
